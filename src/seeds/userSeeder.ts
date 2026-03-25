@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { hashPassword } from "better-auth/crypto";
 import { prisma } from "../lib/prisma";
 
 export const userSeeder = async() => {
@@ -7,6 +8,7 @@ export const userSeeder = async() => {
 	if(users.length > 0) return;
 
 	const organisations = await prisma.organization.findMany();
+	const hashedPassword = await hashPassword("Test123!");
 
 	const userPromises = [];
 	for(const org of organisations) {
@@ -16,7 +18,16 @@ export const userSeeder = async() => {
 					data: {
 						email: faker.internet.email(),
 						name: faker.person.fullName(),
-						orgId: org.id
+						emailVerified: true,
+						orgId: org.id,
+						accounts: {
+							create: {
+								id: faker.string.uuid(),
+								accountId: faker.string.uuid(),
+								providerId: "credential",
+								password: hashedPassword,
+							}
+						}
 					}
 				})
 			);
