@@ -16,7 +16,7 @@ export const userSeeder = async() => {
 			userPromises.push(
 				prisma.user.create({
 					data: {
-						email: faker.internet.email(),
+						email: faker.internet.email().toLowerCase(),
 						name: faker.person.fullName(),
 						emailVerified: true,
 						orgId: org.id,
