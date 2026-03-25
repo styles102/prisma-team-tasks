@@ -30,7 +30,7 @@ export default async function DashboardPage() {
 		redirect("/");
 	}
 
-	const projects = await getProjects((session.user as any).orgId);
+	const projects = await getProjects(session.user.orgId);
 
 	return (
 		<div className="flex flex-1 flex-col gap-8 p-8 max-w-5xl mx-auto w-full">
